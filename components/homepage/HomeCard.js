@@ -1,12 +1,12 @@
 import { Box, Text } from "@chakra-ui/react";
 
 import { useMetamask, useAddress, ConnectWallet } from "@thirdweb-dev/react";
+import { useStateContext } from '../../context';
 
 export default function HomeCard() {
-  const address = useAddress();
-  const connect = useMetamask();
+  const { connect, address } = useStateContext();
 
-  const basicBoxStyles = {
+   const basicBoxStyles = {
     display: "flex",
     alignItems: "end",
     justifyContent: "center",
@@ -31,7 +31,12 @@ export default function HomeCard() {
             btnTitle="Get Started"
             theme="white"
             className="my-custom-class"
+            handleClick={() => {
+              if(addr) navigate('create-campaign')
+              else connect()
+            }}
           />
+          {address}
         </Box>
       </Box>
     </Box>

@@ -1,6 +1,11 @@
-//require('dotenv').config();
-const key = process.env.REACT_APP_PINATA_KEY;
-const secret = process.env.REACT_APP_PINATA_SECRET;
+// require('dotenv').config();
+// const path = require('path')
+// require('dotenv').config({ path: path.resolve(__dirname, './.env') })
+//require('dotenv').config({ path: 'bid-bloc/.env' })
+const REACT_APP_PINATA_KEY = "e60fdf41f98824e98061"
+const REACT_APP_PINATA_SECRET = "068b994813852ce51e0d0d467fab1767ea007638ac408e4877b28669b42eabe3"
+const key = REACT_APP_PINATA_KEY;
+const secret = REACT_APP_PINATA_SECRET;
 
 const axios = require('axios');
 const FormData = require('form-data');
@@ -32,6 +37,7 @@ export const uploadJSONToIPFS = async(JSONBody) => {
 };
 
 export const uploadFileToIPFS = async(file) => {
+    console.log("yeah",key);
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     //making axios POST request to Pinata ⬇️
     

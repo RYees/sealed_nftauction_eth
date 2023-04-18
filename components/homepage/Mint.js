@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { uploadFileToIPFS } from "../../pianata";
+import { uploadFileToIPFS } from "../../pages/pianata";
 import { useStateContext } from '../../context';
 
 import {
@@ -32,10 +32,10 @@ const SearchBar = () => {
     rounded: "lg",
   };
   
- // const { mint,formParams, updateFormParams } = useStateContext();
+  const { mint,formParams, updateFormParams } = useStateContext();
   const [fileURL, setFileURL] = useState(null);
   async function OnChangeFile(e) {
-    setIsLoading(true)
+    //setIsLoading(true)
     var file = e.target.files[0];
     try {
         const response = await uploadFileToIPFS(file);
@@ -52,6 +52,7 @@ const SearchBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("sweett",{fileURL});
+    console.log("formdata", formParams);
     mint(fileURL);
   };
 
@@ -69,8 +70,8 @@ const SearchBar = () => {
           variant="outline"
           border="2px"
           borderColor="white"
-          // onClick={onOpen}
-          onClick={handleSubmit}
+          onClick={onOpen}
+          //onClick={handleSubmit}
         >
           Mint NFT
         </Button>
@@ -142,7 +143,8 @@ const SearchBar = () => {
                           variant="outline"
                           border="2px"
                           borderColor="white"
-                          onClick={onOpen}
+                          // onClick={onOpen}
+                          onClick={handleSubmit}
                         >
                           Mint
                         </Button>

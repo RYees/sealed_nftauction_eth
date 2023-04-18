@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { useState } from "react";
 import "../styles/globals.css";
+import { StateContextProvider } from '../context';
+
 
 import {
   ThirdwebProvider,
@@ -40,7 +42,9 @@ export default function App({ Component, pageProps }) {
       >
       
         <ChakraProvider>
-          <Component {...pageProps} />
+          <StateContextProvider>
+            <Component {...pageProps} />
+          </StateContextProvider>
         </ChakraProvider>
       </ThirdwebProvider>
       <ReactQueryDevtools initialIsOpen={false} />

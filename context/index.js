@@ -1,9 +1,9 @@
-import React, { useContext, createContext, useEffect} from 'react';
+import React, { useContext, createContext, useEffect, useState} from 'react';
 
 import { useAddress, useContract, useMetamask, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { EditionMetadataWithOwnerOutputSchema } from '@thirdweb-dev/sdk';
-import { uploadFileToIPFS, uploadJSONToIPFS } from "../pianata";
+import { uploadFileToIPFS, uploadJSONToIPFS } from "../pages/pianata";
 
 const StateContext = createContext();
 
@@ -43,21 +43,58 @@ export const StateContextProvider = ({ children }) => {
       }
     }
 
+    // const mintNft = async (fileURL) => {
+    //   const { ownername, description } = formParams;
+    //   console.log("form data",formParams);
+    //   try {
+    //     const metadataURL = await uploadMetadataToIPFS(fileURL);
+    //     console.log("metadataurl", metadataURL);
+    //     console.log("address", address);
+    //     const data = await mint([
+    //       metadataURL,
+    //       "0x57614b7DFcBdb14907C9573f712461Ed3c983a56", 
+    //     ])
+    //     console.log("Minting nft successful", data)
+    //   } catch (error) {
+    //     console.log("Minting nft failed", error)
+    //   }
+    // }
+
     const mintNft = async (fileURL) => {
       const { ownername, description } = formParams;
       console.log("form data",formParams);
-      try {
-        const metadataURL = await uploadMetadataToIPFS(fileURL);
-        const data = await mint([
-          metadataURL,
-          address, // owner
-        ])
-        console.log("Minting nft successful", data)
-      } catch (error) {
-        console.log("Minting nft failed", error)
+      const metadataURL = await uploadMetadataToIPFS(fileURL);
+      const donations = await contract.call('mint', metadataURL, "0x57614b7DFcBdb14907C9573f712461Ed3c983a56");
+     // const numberOfDonations = donations[0].length;
+  
+      const parsedDonations = [];
+  
+      for(let i = 0; i < numberOfDonations; i++) {
+        parsedDonations.push({
+          donator: donations[0][i],
+          donation: ethers.utils.formatEther(donations[1][i].toString())
+        })
       }
+  
+      return parsedDonations;
     }
-
+  
+    // const publishCampaign = async (form) => {
+    //   try {
+    //     const data = await createCampaign([
+    //       address, // owner
+    //       form.title, // title
+    //       form.description, // description
+    //       form.target,
+    //       new Date(form.deadline).getTime(), // deadline,
+    //       form.image
+    //     ])
+  
+    //     console.log("contract call success", data)
+    //   } catch (error) {
+    //     console.log("contract call failure", error)
+    //   }
+    // }
     // uint256 tokenId, uint256 price, uint256 durationInSeconds, uint256 revealInSeconds
     async function startAuction(fileURL) {
       const { ownername, description } = formParams;
@@ -139,6 +176,8 @@ export const StateContextProvider = ({ children }) => {
         formParams, 
         updateFormParams,
         mint: mintNft,
+        connect,
+        address
         // createCampaign: publishCampaign,
       }}
     >
