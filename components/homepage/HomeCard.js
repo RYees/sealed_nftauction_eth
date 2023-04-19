@@ -1,11 +1,12 @@
 import { Box, Text } from "@chakra-ui/react";
 
 import { useMetamask, useAddress, ConnectWallet } from "@thirdweb-dev/react";
-//import { useStateContext } from '../../context';
+import { useStateContext } from '../../context';
 
 export default function HomeCard() {
-  //const { connect, address } = useStateContext();
-
+  const { connect, currentaddress, setAddress } = useStateContext();
+   const address = useAddress();
+   setAddress(address);
    const basicBoxStyles = {
     display: "flex",
     alignItems: "end",
@@ -26,7 +27,9 @@ export default function HomeCard() {
           Welcome to the Future of auctions <br />
           where Heroes are made and legends are born
         </Text>
+        <Text>{currentaddress}</Text>
         <Box marginTop="20">
+          
           <ConnectWallet
             btnTitle="Get Started"
             theme="white"

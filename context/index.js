@@ -16,13 +16,36 @@ const getContractData = async() => {
 };
 
 export const StateContextProvider = ({ children }) => {
-   //const { mutateAsync: mint } = useContractWrite(contract, 'mint'); 
- 
+   const [ currentaddress, setAddress ] = useState("");
+   //const [currentAccount, setCurrentAccount] = useState(""); 
    const address = useAddress();
    const connect = useMetamask();
 
   const [formParams, updateFormParams] = useState({ ownername: '', description: ''});
-
+   
+   const checkIfWalletIsConnected = async () => {
+    // try {
+    //   if(address) {
+    //     alert("wallet connected!");
+    //   } else {
+    //     alert("Please connect to your wallet!");
+    //   }
+    // } catch(error){
+    //   console.log("Wallet not connected",error);
+    // }
+    try {
+      if (!address) return alert("Please connect to wallet.");
+   
+      if (address) {
+        setAddress(address);
+        //getAllTransactions();        
+      } else {
+        console.log("No accounts found");
+      }
+    } catch (error) {
+      console.log(error);
+      }
+   }
    //This function uploads the metadata to IPFS
     async function uploadMetadataToIPFS(fileURL) {
       const {ownername, description} = formParams;
@@ -50,17 +73,21 @@ export const StateContextProvider = ({ children }) => {
       const { ownername, description } = formParams;
       console.log("form data",formParams);
       try {
-        const contracts = await getContractData();
-        console.log("contracting", contracts);
-        const add = "0x57614b7DFcBdb14907C9573f712461Ed3c983a56";
-        const metadataURL = await uploadMetadataToIPFS(fileURL);
-        // const data = await contracts.call("mint",[metadataURL, add]);
-        const data = await contracts.call("name");       
-        console.log("people", data);
+        if(address){
+          const contracts = await getContractData();
+          console.log("contracting", contracts);
+          const add = "0x57614b7DFcBdb14907C9573f712461Ed3c983a56";
+          const metadataURL = await uploadMetadataToIPFS(fileURL);
+          // const data = await contracts.call("mint",[metadataURL, add]);
+          const data = await contracts.call("name");       
+          console.log("people", data);
+        } else {
+          alert("connect to you wallet, to proceed")
         }
-         catch(error) {
-          console.log("failed", error);
-        }
+      } catch(error) {
+        console.log("failed", error);
+      }
+      
     }
 
     // const mintNft = async () => {
@@ -82,8 +109,8 @@ export const StateContextProvider = ({ children }) => {
     // }
 
     useEffect(()=>{
-      mintNft();
-    })
+      checkIfWalletIsConnected();
+    }, []);
    
   
     // const publishCampaign = async (form) => {
@@ -184,7 +211,9 @@ export const StateContextProvider = ({ children }) => {
         updateFormParams,
         mintNft,
         connect,
-        address
+        address,
+        currentaddress,
+        setAddress
         // createCampaign: publishCampaign,
       }}
 
