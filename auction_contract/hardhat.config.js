@@ -6,8 +6,8 @@ module.exports = {
     networks: {
       harhat: {},
       sepolia: {
-        url: 'https://rpc.sepolia.dev',
-        accounts: []
+        url: 'https://rpc.ankr.com/eth_sepolia',
+        accounts: [`0x${process.env.PRIVATE_KEY}`]
       }
     },
     settings: {

@@ -1,6 +1,6 @@
 {
   "name": "bid-block",
-  "version": "0.1.0",
+  "version": "13.0.6",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -23,9 +23,9 @@
     "ethers": "^5.7.2",
     "framer-motion": "^10.8.5",
     "immer": "^9.0.19",
-    "next": "13.2.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "next": "^13.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
     "zustand": "^4.3.6"
   },

@@ -5,12 +5,12 @@ import { useState } from "react";
 import "../styles/globals.css";
 import { StateContextProvider } from '../context';
 
-
 import {
   ThirdwebProvider,
   metamaskWallet,
   coinbaseWallet,
   walletConnect,
+  ChainId
 } from "@thirdweb-dev/react";
 import {
   ThirdwebStorage,
@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThirdwebProvider
-        activeChain="binance-testnet"
+        desiredChainId={ChainId.Sepolia}
         supportedWallets={[metamaskWallet(), coinbaseWallet(), walletConnect()]}
         autoConnect={false}
         storageInterface={storage}

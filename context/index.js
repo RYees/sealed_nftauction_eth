@@ -1,22 +1,25 @@
 import React, { useContext, createContext, useEffect, useState} from 'react';
-
+// 1:56:07 / 3:33:50
 import { useAddress, useContract, useMetamask, useContractWrite } from '@thirdweb-dev/react';
 import { ethers } from 'ethers';
 import { EditionMetadataWithOwnerOutputSchema } from '@thirdweb-dev/sdk';
 import { uploadFileToIPFS, uploadJSONToIPFS } from "../pages/pianata";
+import { Sepolia } from "@thirdweb-dev/chains";
+import { ThirdwebSDK } from "@thirdweb-dev/sdk/evm";
 
 const StateContext = createContext();
 
+const getContractData = async() => {
+   const sdk = new ThirdwebSDK(Sepolia);
+   const contract = await sdk.getContract("0x1CF62190fcd41cfbe0637E358caF70f57AAf3100");
+   return contract;
+};
+
 export const StateContextProvider = ({ children }) => {
-  const { contract } = useContract('0xBC75331a300D98668433529DDbaa2eFEe5Bd5F67');
-   useEffect(()=>{
-    console.log("contract", contract);
-   })
+   //const { mutateAsync: mint } = useContractWrite(contract, 'mint'); 
  
-  const { mutateAsync: mint } = useContractWrite(contract, 'mint');
- 
-  const address = useAddress();
-  const connect = useMetamask();
+   const address = useAddress();
+   const connect = useMetamask();
 
   const [formParams, updateFormParams] = useState({ ownername: '', description: ''});
 
@@ -43,41 +46,45 @@ export const StateContextProvider = ({ children }) => {
       }
     }
 
-    // const mintNft = async (fileURL) => {
-    //   const { ownername, description } = formParams;
-    //   console.log("form data",formParams);
-    //   try {
-    //     const metadataURL = await uploadMetadataToIPFS(fileURL);
-    //     console.log("metadataurl", metadataURL);
-    //     console.log("address", address);
-    //     const data = await mint([
-    //       metadataURL,
-    //       "0x57614b7DFcBdb14907C9573f712461Ed3c983a56", 
-    //     ])
-    //     console.log("Minting nft successful", data)
-    //   } catch (error) {
-    //     console.log("Minting nft failed", error)
-    //   }
-    // }
-
     const mintNft = async (fileURL) => {
       const { ownername, description } = formParams;
       console.log("form data",formParams);
-      const metadataURL = await uploadMetadataToIPFS(fileURL);
-      const donations = await contract.call('mint', metadataURL, "0x57614b7DFcBdb14907C9573f712461Ed3c983a56");
-     // const numberOfDonations = donations[0].length;
-  
-      const parsedDonations = [];
-  
-      for(let i = 0; i < numberOfDonations; i++) {
-        parsedDonations.push({
-          donator: donations[0][i],
-          donation: ethers.utils.formatEther(donations[1][i].toString())
-        })
-      }
-  
-      return parsedDonations;
+      try {
+        const contracts = await getContractData();
+        console.log("contracting", contracts);
+        const add = "0x57614b7DFcBdb14907C9573f712461Ed3c983a56";
+        const metadataURL = await uploadMetadataToIPFS(fileURL);
+        // const data = await contracts.call("mint",[metadataURL, add]);
+        const data = await contracts.call("name");       
+        console.log("people", data);
+        }
+         catch(error) {
+          console.log("failed", error);
+        }
     }
+
+    // const mintNft = async () => {
+    //   //const contracts = createEthereumContract();
+    //   try{
+    //   // const { ownername, description } = formParams;
+    //   // console.log("form data",formParams);
+    //   console.log("contacting", await contract);
+    //   const metadataURL = "await uploadMetadataToIPFS(fileURL);"
+    //   const add = "0x57614b7DFcBdb14907C9573f712461Ed3c983a56";
+    //  // const data = await contract.functions("balanceOf", [add])
+    //   //const data = await contract.Read('name');
+    //   //await data.wait()
+    //   console.log("contract call success")
+    //   } catch (error) {
+    //     console.log("contract call failure", error)
+    //   }
+      
+    // }
+
+    useEffect(()=>{
+      mintNft();
+    })
+   
   
     // const publishCampaign = async (form) => {
     //   try {
@@ -90,10 +97,10 @@ export const StateContextProvider = ({ children }) => {
     //       form.image
     //     ])
   
-    //     console.log("contract call success", data)
-    //   } catch (error) {
-    //     console.log("contract call failure", error)
-    //   }
+      //   console.log("contract call success", data)
+      // } catch (error) {
+      //   console.log("contract call failure", error)
+      // }
     // }
     // uint256 tokenId, uint256 price, uint256 durationInSeconds, uint256 revealInSeconds
     async function startAuction(fileURL) {
@@ -175,11 +182,12 @@ export const StateContextProvider = ({ children }) => {
       value={{ 
         formParams, 
         updateFormParams,
-        mint: mintNft,
+        mintNft,
         connect,
         address
         // createCampaign: publishCampaign,
       }}
+
     >
       {children}
     </StateContext.Provider>

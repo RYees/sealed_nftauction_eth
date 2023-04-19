@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button, Flex } from "@chakra-ui/react";
+//import { useStateContext } from '../../context';
 
 export default function MainNavbar() {
   const [showMenu, setShowMenu] = useState(false);
+ // const { connect, address } = useStateContext();
   return (
     <Flex
       alignItems="center"
@@ -37,7 +39,13 @@ export default function MainNavbar() {
         variant="outline"
         border="2px"
         borderColor="white"
-      >
+
+        // handleClick={() => {
+        //   if(address) navigate('mynft')
+        //   else connect()
+        // }}
+      > 
+       
         Account
       </Button>
     </Flex>

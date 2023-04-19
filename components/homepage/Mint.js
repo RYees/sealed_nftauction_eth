@@ -23,16 +23,25 @@ import {
   Textarea,
   Box
 } from "@chakra-ui/react";
+import { Sepolia } from "@thirdweb-dev/chains";
+import { ThirdwebSDK } from "@thirdweb-dev/sdk/evm";
+import { useAddress, useMetamask } from '@thirdweb-dev/react';
+const getfromContract = async() => {
+  const sdk = new ThirdwebSDK(Sepolia);
+  const contract = await sdk.getContract("0x1CF62190fcd41cfbe0637E358caF70f57AAf3100");
+  return contract;
+};
 
-const SearchBar = () => {
+const SearchBar = () => {  
   const { isOpen, onOpen, onClose } = useDisclosure();
+  //const { connect, address } = useStateContext();
   const tabStyle = {
     marginRight: "10",
     width: "60rem",
     rounded: "lg",
   };
   
-  const { mint,formParams, updateFormParams } = useStateContext();
+  const {mintNft,formParams, updateFormParams } = useStateContext();
   const [fileURL, setFileURL] = useState(null);
   async function OnChangeFile(e) {
     //setIsLoading(true)
@@ -48,18 +57,40 @@ const SearchBar = () => {
           console.log("Error during file upload", e);
       }
   }
+   
+  const address = useAddress();
+  const connect = useMetamask();
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
+   try {
+    
     e.preventDefault();
-    console.log("sweett",{fileURL});
-    console.log("formdata", formParams);
-    mint(fileURL);
+    mintNft(fileURL);
+    // const contracts = await getfromContract();
+    // console.log("contracting", contracts);
+    // const add = "0x57614b7DFcBdb14907C9573f712461Ed3c983a56";
+    // const metadata = "inside"
+   // const data = await contracts.call("mint",[metadata, add]);
+   // const data = await contracts.call("name")
+   
+    //console.log("sweett", data);
+  }
+     catch(error) {
+      console.log("failed", error);
+      console.log("formdata", formParams);
+     }
+  
+  // await mintNft(fileURL);
   };
 
   return (
     <>
       <Flex justifyContent="center" paddingTop={10} gap={10}>
         {/* <Input placeholder="Search" htmlSize={4} width="sm" variant="filled" /> */}
+        <Button onClick= {() => {
+            connect()
+          }}>Connect</Button>
         <Button
           colorScheme="black"
           bgColor="black"
@@ -122,8 +153,7 @@ const SearchBar = () => {
                     <Box mb="10px" fontWeight="bold">
                       <Text>Description:</Text>
                       <Textarea mb="5px" fontWeight="bold" placeholder="write here..." onChange={e => updateFormParams({...formParams, description: e.target.value})} value={formParams.description}>                        
-                      </Textarea>
-                      {/* <Input placeholder="Here is a sample placeholder" size="lg" /> */}
+                      </Textarea>                     
                     </Box>
                     <Box mb="30px" fontWeight="bold">
                         <label className="block text-purple-500 text-sm font-bold mb-2" htmlFor="image">Upload file</label><br/>
