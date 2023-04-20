@@ -1,11 +1,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button, Flex } from "@chakra-ui/react";
-//import { useStateContext } from '../../context';
+import { CustomButton } from './CustomButton';
+import { useStateContext } from '../../context';
+import { useRouter } from 'next/navigation';
+import Link from "next/link";
 
 export default function MainNavbar() {
   const [showMenu, setShowMenu] = useState(false);
- // const { connect, address } = useStateContext();
+  const { connect, address } = useStateContext();
+  const router = useRouter();
   return (
     <Flex
       alignItems="center"
@@ -15,21 +19,38 @@ export default function MainNavbar() {
       fontSize={20}
       padding="5"
     >
-      <a href="./">
-        <Image src="/images/svg/logo.svg" alt="" width="100" height="100" />
-      </a>
-      <a href="./home" className="block px-8 py-4 hover:border">
-        Home
-      </a>
-      <a href="./auctions" className="block px-8 py-4 hover:border">
-        Auctions
-      </a>
-      <a href="./place-bid" className="block px-8 py-4 hover:border">
-        Place Bid
-      </a>
-      <a href="" className="block px-8 py-4 hover:border">
-        Asset
-      </a>
+      <Link href="/">        
+          <Image src="/images/svg/logo.svg" alt="" width="100" height="100" />        
+      </Link>
+
+      <Link href="/home" className="block px-8 py-4 hover:border">        
+          Home        
+      </Link>
+
+      <Link href="/auctions" className="block px-8 py-4 hover:border">        
+          Auctions        
+      </Link>
+
+      <Link href="/place-bid" className="block px-8 py-4 hover:border">        
+          Place Bid        
+      </Link>
+
+      <Link href="" className="block px-8 py-4 hover:border">        
+          Asset        
+      </Link>
+
+      <Link href="/mynft" className="block px-8 py-4 hover:border">        
+        Nfts      
+      </Link>
+      {/* <CustomButton 
+          btnType="button"
+          title={address ? 'Create a campaign' : 'Connect'}
+          styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
+          handleClick={() => {
+            if(address) router.push('/')
+            else connect()
+          }}
+        /> */}
       <Button
         colorScheme="black"
         size="lg"
@@ -39,12 +60,11 @@ export default function MainNavbar() {
         variant="outline"
         border="2px"
         borderColor="white"
-
-        // handleClick={() => {
-        //   if(address) navigate('mynft')
-        //   else connect()
-        // }}
-      > 
+        onClick={() => {
+          if(address) router.push('/')
+          else connect()
+        }}
+      >  
        
         Account
       </Button>

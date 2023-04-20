@@ -24,7 +24,7 @@ export default function Home() {
         <meta property="og:image" content="/images/svg/logo.svg" />
       </Head>
       <main>
-        <MainNavbar />
+        {/* <MainNavbar /> */}
         <HomeCard />
       </main>
     </>

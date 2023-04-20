@@ -34,7 +34,7 @@ const getfromContract = async() => {
 
 const SearchBar = () => {  
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //const { connect, address } = useStateContext();
+  const { connect, address } = useStateContext();
   const tabStyle = {
     marginRight: "10",
     width: "60rem",
@@ -57,10 +57,6 @@ const SearchBar = () => {
           console.log("Error during file upload", e);
       }
   }
-   
-  const address = useAddress();
-  const connect = useMetamask();
-
 
   const handleSubmit = async (e) => {
    try {
@@ -88,9 +84,7 @@ const SearchBar = () => {
     <>
       <Flex justifyContent="center" paddingTop={10} gap={10}>
         {/* <Input placeholder="Search" htmlSize={4} width="sm" variant="filled" /> */}
-        <Button onClick= {() => {
-            connect()
-          }}>Connect</Button>
+        <Text>{address}</Text>
         <Button
           colorScheme="black"
           bgColor="black"

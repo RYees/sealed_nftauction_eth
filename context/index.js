@@ -109,7 +109,7 @@ export const StateContextProvider = ({ children }) => {
     // }
 
     useEffect(()=>{
-      checkIfWalletIsConnected();
+      //checkIfWalletIsConnected();
     }, []);
    
   

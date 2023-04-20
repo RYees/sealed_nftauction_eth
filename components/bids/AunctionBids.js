@@ -8,7 +8,7 @@ import TopAunction from "components/homepage/TopAunction";
 const AunctionBids = () => {
   return (
     <>
-      <MainNavbar />
+      {/* <MainNavbar /> */}
       <SearchBar />
       <Box marginX="9rem">
         <Text marginY="2" fontSize="2xl" color="red" fontWeight="bold">

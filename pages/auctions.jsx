@@ -9,7 +9,7 @@ import AunctionBids from "components/bids/AunctionBids";
 const autions = () => {
   return (
     <Box height="100vh">
-      <MainNavbar />
+      {/* <MainNavbar /> */}
       <SearchBar />
       <Auctions />
       <TopAunction />
