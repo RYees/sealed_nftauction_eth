@@ -57,6 +57,8 @@ contract NFTAuction is ERC721URIStorage, ReentrancyGuard {
     // EVENTS 
     event AuctionEnded(address winner, uint highestBid);
 
+    function getListPrice() public view returns (uint256) { return startingPrice; }
+
     function mint(string memory tokenURI, address minterAddress) public returns (uint256) {
         tokenCounter++;
         uint256 tokenId = tokenCounter;

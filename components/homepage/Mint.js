@@ -41,7 +41,7 @@ const SearchBar = () => {
     rounded: "lg",
   };
   
-  const {mintNft,formParams, updateFormParams } = useStateContext();
+  const { sealBid, bid, reveal, completeAuction, withdrawBid, transferFund,isAuctionOpen,mintNft,formParams, updateFormParams } = useStateContext();
   const [fileURL, setFileURL] = useState(null);
   async function OnChangeFile(e) {
     //setIsLoading(true)
@@ -58,26 +58,30 @@ const SearchBar = () => {
       }
   }
 
+  const handle = async (e) => {
+    try {    
+     e.preventDefault();
+     isAuctionOpen(1);
+    }
+      catch(error) {
+       console.log("failed", error);
+       console.log("formdata", formParams);
+      }
+   
+   // await mintNft(fileURL); 0x365cc8c0728e08aef0874981ed59dc47178fd570daeb01267bf950656e102897
+   };
+
   const handleSubmit = async (e) => {
-   try {
-    
+   try {    
     e.preventDefault();
     mintNft(fileURL);
-    // const contracts = await getfromContract();
-    // console.log("contracting", contracts);
-    // const add = "0x57614b7DFcBdb14907C9573f712461Ed3c983a56";
-    // const metadata = "inside"
-   // const data = await contracts.call("mint",[metadata, add]);
-   // const data = await contracts.call("name")
-   
-    //console.log("sweett", data);
-  }
+   }
      catch(error) {
       console.log("failed", error);
       console.log("formdata", formParams);
      }
   
-  // await mintNft(fileURL);
+  // await mintNft(fileURL); 0x365cc8c0728e08aef0874981ed59dc47178fd570daeb01267bf950656e102897
   };
 
   return (
@@ -96,7 +100,7 @@ const SearchBar = () => {
           border="2px"
           borderColor="white"
           onClick={onOpen}
-          //onClick={handleSubmit}
+         // onClick={handle}
         >
           Mint NFT
         </Button>

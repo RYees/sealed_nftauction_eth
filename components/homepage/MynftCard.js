@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, Text, Box, Button } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
+import { useStateContext } from '../../context';
 
 const liveList = [
   {
@@ -24,6 +25,7 @@ const liveList = [
 
 
 const MynftCard = () => {
+  const { address, startAuction } = useStateContext();
   return (
     <Box>
       <Flex justifyContent="space-between">
@@ -41,19 +43,20 @@ const MynftCard = () => {
               </a>
 
               <Box>
-              <a
+              {/* <a
                 href="./create-listing"
                 className="block px-8 py-4 hover:border"
-              >
+              > */}
                 <Button 
                   position="absolute"
                   marginTop="-11rem"
                   marginLeft="4rem"
                   opacity= ""
+                  onClick= {startAuction}
                 >
                   StartAuction
                 </Button>
-              </a>
+              {/* </a> */}
               </Box>
             </Box>
           );
