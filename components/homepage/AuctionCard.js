@@ -41,7 +41,9 @@ const UpcomingList = [
   },
 ];
 
+
 const AuctionCard = () => {
+  
   return (
     <Box>
       <Flex justifyContent="space-between">

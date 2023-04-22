@@ -6,7 +6,7 @@ import MainNavbar from "components/navbars/MainNavbar";
 const listing = () => {
   return (
     <>
-      <MainNavbar />
+      {/* <MainNavbar /> */}
       <NewListing />
     </>
   );

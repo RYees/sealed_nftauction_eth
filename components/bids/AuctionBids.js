@@ -1,11 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 import MainNavbar from "../navbars/MainNavbar";
 import SearchBar from "components/homepage/SearchBar";
-import { Button, Flex, Text, Box, Image } from "@chakra-ui/react";
+import { Button, Flex, Text, Box, Image, Input, useClipboard, NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper, } from "@chakra-ui/react";
 import TopAuctionCard from "components/homepage/TopAuctionCard";
 import TopAunction from "components/homepage/TopAunction";
-
+import { useStateContext } from '../../context';
+import RevealBids from "./RevealBids";
 const AuctionBids = () => {
+  const { connect, address, getNFTData, getMyNfts } = useStateContext();
+  const [value, setValue] = useState(address);
+  const { onCopy, hasCopied } = useClipboard(value);
+  const [show, setShow] = useState(false);
+  const [reveal, showReveal] = useState(false);
   return (
     <>
       {/* <MainNavbar /> */}
@@ -56,7 +66,9 @@ const AuctionBids = () => {
                 </Text>
               </Box>
             </Flex>
-            <Box>
+
+            {reveal ? <Box>
+             <Box>
               <Text fontSize="2xl" fontWeight="bold">
                 {" "}
                 Description
@@ -70,6 +82,61 @@ const AuctionBids = () => {
                 tandem with spiritual connections within the natural world.
               </Text>
             </Box>
+            {!show ? <Flex justifyContent="center">
+             <NumberInput defaultValue={0.01} min={0.01}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+
+              <Text marginRight="8px">
+                <Input type="password" placeholder="passcode" height="40px" />
+              </Text>
+              
+              <Button
+                colorScheme="black"
+                size="xlg"
+                paddingY={3}
+                color="white"
+                variant="outline"
+                border="2px"
+                borderColor="white"
+                bgColor="black"
+                width="20%"
+              >
+                Seal Bid
+              </Button>              
+            </Flex>: null}
+            {show ?<Box mb={2}>
+                <Input
+                  value={value}
+                  width="70%"
+                  onChange={(e) => {
+                    setValue(e.target.value);
+                  }}
+                  mr={2}
+                />
+                <Button onClick={onCopy}>{hasCopied ? "Copied!" : "Copy"}</Button>
+              </Box>:null}
+            <Flex justifyContent="center">
+              <Text marginRight="8px">
+                <Input type="number" placeholder="listing id" height="40px" />
+              </Text>
+            </Flex>
+            <Flex justifyContent="center">
+              {/* <NumberInput defaultValue={0.01} min={0.01}>
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput> */}
+                <Text marginRight="8px">
+                <Input type="password" placeholder="sealed hash" height="40px" />
+              </Text>
+            </Flex>  
             <Flex justifyContent="center">
               <Button
                 colorScheme="black"
@@ -84,7 +151,8 @@ const AuctionBids = () => {
               >
                 Place Bid
               </Button>
-            </Flex>
+            </Flex> 
+            </Box>: <RevealBids/>}
           </Flex>
         </Flex>
         <Flex
