@@ -1,6 +1,6 @@
 import React from "react";
 import { Flex, Text } from "@chakra-ui/react";
-import AunctionCards from "./AunctionCard";
+import AunctionCards from "./AuctionCard";
 import { useStateContext } from '../../context';
 
 const Auctions= () => {

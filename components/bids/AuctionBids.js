@@ -5,7 +5,7 @@ import { Button, Flex, Text, Box, Image } from "@chakra-ui/react";
 import TopAuctionCard from "components/homepage/TopAuctionCard";
 import TopAunction from "components/homepage/TopAunction";
 
-const AunctionBids = () => {
+const AuctionBids = () => {
   return (
     <>
       {/* <MainNavbar /> */}
@@ -145,4 +145,4 @@ const AunctionBids = () => {
   );
 };
 
-export default AunctionBids;
+export default AuctionBids;

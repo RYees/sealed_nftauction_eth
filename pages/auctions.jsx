@@ -4,7 +4,7 @@ import SearchBar from "../components/homepage/SearchBar";
 import Auctions from "../components/homepage/Auctions";
 import TopAunction from "../components/homepage/TopAunction";
 import { Box } from "@chakra-ui/react";
-import AunctionBids from "components/bids/AunctionBids";
+import AunctionBids from "components/bids/AuctionBids";
 
 const autions = () => {
   return (

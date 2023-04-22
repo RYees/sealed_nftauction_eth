@@ -34,7 +34,7 @@ const getfromContract = async() => {
 
 const SearchBar = () => {  
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { connect, address } = useStateContext();
+  const { connect, address, getNFTData, getMyNfts } = useStateContext();
   const tabStyle = {
     marginRight: "10",
     width: "60rem",
@@ -99,8 +99,8 @@ const SearchBar = () => {
           variant="outline"
           border="2px"
           borderColor="white"
-          onClick={onOpen}
-         // onClick={handle}
+          //onClick={onOpen}
+          onClick={getMyNfts}
         >
           Mint NFT
         </Button>
