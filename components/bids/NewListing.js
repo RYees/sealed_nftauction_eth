@@ -14,11 +14,25 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
 } from "@chakra-ui/react";
+import { useStateContext } from '../../context';
 
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
 const NewListing = () => {
+  const { address, message, startAuction, getMyNfts, mynft, listingParams, updateListingParams } = useStateContext();
   const [currentStep, setCurrentStep] = useState("1");
+
+  const formChange = (event) => {
+    updateListingParams((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value
+    }))
+  }
+
+  const auctionstart = () => {
+    startAuction()
+  }
+
   const Step1 = () => {
     return (
       <Flex direction="column" marginY="5rem" paddingX="15rem" gap={5}>
@@ -35,13 +49,13 @@ const NewListing = () => {
           <Text mb="5px" fontWeight="bold">
             TokenId:
           </Text>
-          <Input type="number" placeholder="your nft token id" size="lg" />
+          <Input type="number" placeholder="your nft token id" size="lg" onChange={e => updateListingParams({...listingParams, tokenId: e.target.value})} value={listingParams.tokenId} />
         </Box>
         <Box>
           <Text mb="5px" fontWeight="bold">
             Price:
           </Text>
-          <NumberInput defaultValue={0.01} min={0.01}>
+          <NumberInput defaultValue={0} step={0.1}  name={'price'}  value={listingParams.price} onChange={(value) => formChange({ target: { name: 'price', value }})}  >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -92,7 +106,7 @@ const NewListing = () => {
           <Text mb="5px" fontWeight="bold">
             Auction Duration(s):
           </Text>
-          <NumberInput defaultValue={60} min={60}>
+          <NumberInput defaultValue={60} step={60} name={'auction_duration'} value={listingParams.auction_duration} onChange={(value) => formChange({ target: { name: 'auction_duration', value }})} >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -105,7 +119,7 @@ const NewListing = () => {
           <Text mb="5px" fontWeight="bold">
             Reveal Duration(s):
           </Text>
-          <NumberInput defaultValue={60} min={60}>
+          <NumberInput defaultValue={60} step={60} name={'auction_reveal'} value={listingParams.auction_reveal} onChange={(value) => formChange({ target: { name: 'auction_reveal', value }})}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -172,10 +186,13 @@ const NewListing = () => {
             borderColor="white"
             bgColor="black"
             width="40%"
+            onClick={auctionstart}
           >
             Create
           </Button>
         </Flex>
+
+        <Box>{message}</Box>
       </Flex>
     );
   };

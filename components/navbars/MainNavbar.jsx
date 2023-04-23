@@ -31,13 +31,13 @@ export default function MainNavbar() {
           Auctions        
       </Link>
 
-      <Link href="/place-bid" className="block px-8 py-4 hover:border">        
+      {/* <Link href="/place-bid" className="block px-8 py-4 hover:border">        
           Place Bid        
-      </Link>
+      </Link> */}
 
-      <Link href="" className="block px-8 py-4 hover:border">        
+      {/* <Link href="" className="block px-8 py-4 hover:border">        
           Asset        
-      </Link>
+      </Link> */}
 
       <Link href="/mynft" className="block px-8 py-4 hover:border">        
         Nfts      

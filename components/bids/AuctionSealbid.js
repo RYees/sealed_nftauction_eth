@@ -9,13 +9,32 @@ import { Button, Flex, Text, Box, Image, Input, useClipboard, NumberInput,
 import TopAuctionCard from "components/homepage/TopAuctionCard";
 import TopAunction from "components/homepage/TopAunction";
 import { useStateContext } from '../../context';
-import RevealBids from "./RevealBids";
-const AuctionBids = () => {
-  const { connect, address, getNFTData, getMyNfts } = useStateContext();
+import AuctionPlacebid from "./AuctionPlacebid";
+
+const AuctionSealbid = () => {
+  const { sealBid, connect, address, getNFTData, nfttoken, getMyNfts, sealedDetails, sealed, setsealParams, sealParams, byte } = useStateContext();
   const [value, setValue] = useState(address);
   const { onCopy, hasCopied } = useClipboard(value);
   const [show, setShow] = useState(false);
   const [reveal, showReveal] = useState(false);
+
+  const formChange = (event) => {
+    setsealParams((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value
+    }))
+  }
+  const handleFormFieldChange = (fieldName, e) => {
+    setsealParams({ ...sealParams, [fieldName]: e.target.value })
+  }
+  //console.log("chu", sealParams);
+  const seal = () => {
+    //setShow(true);
+    //getNFTData()
+    //nfttoken()
+    sealBid()
+  }
+
   return (
     <>
       {/* <MainNavbar /> */}
@@ -65,10 +84,16 @@ const AuctionBids = () => {
                   12.07.56
                 </Text>
               </Box>
+              <Box>
+                <Text fontSize="md"> Reveal time Ends In</Text>
+                <Text fontSize="xl" fontWeight="bold">
+                  {" "}
+                  12.07.56  
+                </Text>
+              </Box>
             </Flex>
 
-            {reveal ? <Box>
-             <Box>
+            <Box>
               <Text fontSize="2xl" fontWeight="bold">
                 {" "}
                 Description
@@ -82,77 +107,46 @@ const AuctionBids = () => {
                 tandem with spiritual connections within the natural world.
               </Text>
             </Box>
-            {!show ? <Flex justifyContent="center">
-             <NumberInput defaultValue={0.01} min={0.01}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+            {!sealed ? 
+            <Box>
+                <Box mb={5}>
+                  <Text mb="5px" fontWeight="bold">
+                    Bid Value:
+                  </Text>
+                  <NumberInput defaultValue={0} step={0.1} name={'bidvalue'} value={sealParams.bidvalue} onChange={(value) => formChange({ target: { name: 'bidvalue', value }})}>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </Box>
 
-              <Text marginRight="8px">
-                <Input type="password" placeholder="passcode" height="40px" />
-              </Text>
-              
-              <Button
-                colorScheme="black"
-                size="xlg"
-                paddingY={3}
-                color="white"
-                variant="outline"
-                border="2px"
-                borderColor="white"
-                bgColor="black"
-                width="20%"
-              >
-                Seal Bid
-              </Button>              
-            </Flex>: null}
-            {show ?<Box mb={2}>
-                <Input
-                  value={value}
-                  width="70%"
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                  }}
-                  mr={2}
-                />
-                <Button onClick={onCopy}>{hasCopied ? "Copied!" : "Copy"}</Button>
-              </Box>:null}
-            <Flex justifyContent="center">
-              <Text marginRight="8px">
-                <Input type="number" placeholder="listing id" height="40px" />
-              </Text>
-            </Flex>
-            <Flex justifyContent="center">
-              {/* <NumberInput defaultValue={0.01} min={0.01}>
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput> */}
-                <Text marginRight="8px">
-                <Input type="password" placeholder="sealed hash" height="40px" />
-              </Text>
-            </Flex>  
-            <Flex justifyContent="center">
-              <Button
-                colorScheme="black"
-                size="xlg"
-                paddingY={5}
-                color="white"
-                variant="outline"
-                border="2px"
-                borderColor="white"
-                bgColor="black"
-                width="50%"
-              >
-                Place Bid
-              </Button>
-            </Flex> 
-            </Box>: <RevealBids/>}
+                <Box mb={5}>
+                    <Text marginRight="8px">
+                     <Input type="password" placeholder="passcode" height="40px" width="101%"  onChange={(e) => handleFormFieldChange('passcode', e)}  value={sealParams.passcode}/>
+                  </Text>
+                </Box>
+
+                <Flex justifyContent="center">          
+                  <Button
+                    colorScheme="black"
+                    size="xlg"
+                    paddingY={3}
+                    color="white"
+                    variant="outline"
+                    border="2px"
+                    borderColor="white"
+                    bgColor="black"
+                    width="20%"
+                    onClick={sealedDetails}
+                  >
+                    Seal Bid
+                  </Button>              
+                </Flex>
+            </Box>
+         : <AuctionPlacebid bytehash={byte}/>}        
+            
           </Flex>
         </Flex>
         <Flex
@@ -213,4 +207,4 @@ const AuctionBids = () => {
   );
 };
 
-export default AuctionBids;
+export default AuctionSealbid;

@@ -22,10 +22,7 @@ const liveList = [
   },
 ];
 
-
-
 const MynftCard = () => {
-  const { address, startAuction } = useStateContext();
   return (
     <Box>
       <Flex justifyContent="space-between">
@@ -35,6 +32,7 @@ const MynftCard = () => {
         <Text fontSize="md"> See All</Text>
       </Flex>
       <Flex gap={5} marginBottom="10">
+      {/* <Image boxSize="xs" src={mynft.image} alt="" rounded="xl" /> */}
         {liveList.map((auction) => {
           return (
             <Box key={auction.id} color="black">
@@ -43,20 +41,19 @@ const MynftCard = () => {
               </a>
 
               <Box>
-              {/* <a
+              <a
                 href="./create-listing"
                 className="block px-8 py-4 hover:border"
-              > */}
+              >
                 <Button 
                   position="absolute"
                   marginTop="-11rem"
-                  marginLeft="4rem"
+                  marginX="5.5rem"
                   opacity= ""
-                  onClick= {startAuction}
                 >
                   StartAuction
                 </Button>
-              {/* </a> */}
+              </a>
               </Box>
             </Box>
           );

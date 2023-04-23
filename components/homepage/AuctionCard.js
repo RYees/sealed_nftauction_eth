@@ -2,6 +2,7 @@ import React from "react";
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const liveList = [
   {
@@ -66,9 +67,9 @@ const AuctionCard = () => {
         {liveList.map((auction) => {
           return (
             <Box key={auction.id} color="black">
-              <a href="./nft-auction-page">
+              <Link href="./auctions/1">
                 <Image boxSize="xs" src={auction.img} alt="" rounded="xl" />
-              </a>
+              </Link>
             </Box>
           );
         })}

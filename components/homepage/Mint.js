@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import { uploadFileToIPFS } from "../../pages/pianata";
 import { useStateContext } from '../../context';
-
-import {
+import { 
   Button,
   Input,
   Flex,
@@ -26,6 +25,7 @@ import {
 import { Sepolia } from "@thirdweb-dev/chains";
 import { ThirdwebSDK } from "@thirdweb-dev/sdk/evm";
 import { useAddress, useMetamask } from '@thirdweb-dev/react';
+
 const getfromContract = async() => {
   const sdk = new ThirdwebSDK(Sepolia);
   const contract = await sdk.getContract("0x1CF62190fcd41cfbe0637E358caF70f57AAf3100");
@@ -41,7 +41,7 @@ const SearchBar = () => {
     rounded: "lg",
   };
   
-  const { sealBid, bid, reveal, completeAuction, withdrawBid, transferFund,isAuctionOpen,mintNft,formParams, updateFormParams } = useStateContext();
+  const { transferFund, isAuctionOpen, mintNft, formParams, updateFormParams } = useStateContext();
   const [fileURL, setFileURL] = useState(null);
   async function OnChangeFile(e) {
     //setIsLoading(true)
@@ -64,8 +64,8 @@ const SearchBar = () => {
      isAuctionOpen(1);
     }
       catch(error) {
-       console.log("failed", error);
-       console.log("formdata", formParams);
+      //  console.log("failed", error);
+      //  console.log("formdata", formParams);
       }
    
    // await mintNft(fileURL); 0x365cc8c0728e08aef0874981ed59dc47178fd570daeb01267bf950656e102897
@@ -77,8 +77,8 @@ const SearchBar = () => {
     mintNft(fileURL);
    }
      catch(error) {
-      console.log("failed", error);
-      console.log("formdata", formParams);
+      // console.log("failed", error);
+      // console.log("formdata", formParams);
      }
   
   // await mintNft(fileURL); 0x365cc8c0728e08aef0874981ed59dc47178fd570daeb01267bf950656e102897

@@ -1,6 +1,7 @@
 import { Box, Text, Button, Flex } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import SearchBar from "./SearchBar";
+import Link from "next/link";
 
 export default function LandingPage() {
   const basicBoxStyles = {
@@ -41,9 +42,9 @@ export default function LandingPage() {
             padding={10}
           >
             <Flex>
-              <a href="./nft-auction-page">
+              <Link href="./auctions/1">
                 <Image boxSize="100%" src="/images/svg/profile.svg" alt="" />
-              </a>
+              </Link>
               <Box marginLeft={5}>
                 <Text marginBottom={2} fontSize="md">
                   @TheManKinniboss
@@ -64,25 +65,27 @@ export default function LandingPage() {
             </Flex>
             <Text fontSize="lg">CountDown</Text>
             <Text fontSize="3xl">22:43:00</Text>
-            <Button
-              colorScheme="black"
-              size="xlg"
-              paddingX={20}
-              paddingY={5}
-              color="white"
-              variant="outline"
-              border="2px"
-              borderColor="white"
-              marginLeft="200px"
-            >
-              Enter Auction
-            </Button>
+            <Link href="./auctions/1">
+              <Button
+                colorScheme="black"
+                size="xlg"
+                paddingX={20}
+                paddingY={5}
+                color="white"
+                variant="outline"
+                border="2px"
+                borderColor="white"
+                marginLeft="200px"
+              >
+                Enter Auction
+              </Button>
+            </Link>
           </Flex>
 
           <Box>
-            <a href="./nft-auction-page">
+            <Link href="./auctions/1">
               <Image boxSize="100%" src="/images/svg/NFT1.svg" alt="" />
-            </a>
+            </Link>
           </Box>
         </Flex>
       </Box>
