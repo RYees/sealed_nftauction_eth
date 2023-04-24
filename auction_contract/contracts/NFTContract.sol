@@ -41,8 +41,6 @@ contract NFTAuction is ERC721URIStorage, ReentrancyGuard {
     mapping(uint256 => uint256) public highestBid;
     mapping(address => uint256[]) public tokenaddress;
 
-    mapping(address => uint256[]) public userOwnedTokens;
-    mapping(uint256 => uint256) public tokenIsAtIndex;
     uint private bidCount = 0;
     uint private revealedCount = 0;
 
@@ -62,6 +60,9 @@ contract NFTAuction is ERC721URIStorage, ReentrancyGuard {
     event AuctionEnded(address winner, uint highestBid);
 
     function getListPrice() public view returns (uint256) { return startingPrice; }
+   
+    function tokenlength(address add) public view returns (uint256) { uint v = tokenaddress[add].length;  return v; }
+
     function mintNftAuction(string memory tokenURI) public returns (uint256) {
         tokenCounter++;
         _tokenIds.increment();
@@ -82,14 +83,14 @@ contract NFTAuction is ERC721URIStorage, ReentrancyGuard {
         uint256 revealEndtime = endAt + revealInSeconds;
 
         listings[listingId] = Listing({
-        seller: msg.sender,
-        tokenId: tokenId,
-        price: price,
-        netPrice: price,
-        status: STATUS_OPEN,
-        startAt: startAt,
-        endAt: endAt,
-        revealEndtime: revealEndtime
+            tokenId: tokenId,
+            seller: msg.sender,
+            price: price,
+            netPrice: price,
+            status: STATUS_OPEN,
+            startAt: startAt,
+            endAt: endAt,
+            revealEndtime: revealEndtime
         });
 
         _transfer(msg.sender, address(this), tokenId);
@@ -119,6 +120,22 @@ contract NFTAuction is ERC721URIStorage, ReentrancyGuard {
         }
         }
         return items;
+    }
+
+     function getAllNFTListings() public view returns (Listing[] memory) {
+        uint nftCount = _tokenIds.current();
+        Listing[] memory tokens = new Listing[](nftCount);
+        uint currentIndex = 0;
+        uint currentId;
+        for(uint i=0;i<nftCount;i++)
+        {
+            currentId = i + 1;
+            Listing storage currentItem = listings[currentId];
+            tokens[currentIndex] = currentItem;
+            currentIndex += 1;
+        }
+        //the array 'tokens' has the list of all NFTs in the marketplace
+        return tokens;
     }
 
     function sealBid(uint _value, string calldata _passcode) public view returns (bytes32) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Flex, Text, Box, Button } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import { useStateContext } from '../../context';
@@ -23,11 +23,17 @@ const liveList = [
 ];
 
 const MynftCard = () => {
+  const {connect, address, getNFTData, getMyNfts, nfttoken, tokens } = useStateContext();
+  useEffect(() => {
+    nfttoken();
+    getMyNfts()
+  });
+  
   return (
     <Box>
       <Flex justifyContent="space-between">
         <Text fontSize="2xl" color="red">
-          My Nft
+          My Nft {tokens}
         </Text>
         <Text fontSize="md"> See All</Text>
       </Flex>

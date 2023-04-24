@@ -34,14 +34,13 @@ const getfromContract = async() => {
 
 const SearchBar = () => {  
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { connect, address, getNFTData, getMyNfts } = useStateContext();
+  const {connect, address, getNFTData, getMyNfts, nfttoken, transferFund, isAuctionOpen, mintNft, formParams, updateFormParams } = useStateContext();
   const tabStyle = {
     marginRight: "10",
     width: "60rem",
     rounded: "lg",
   };
-  
-  const { transferFund, isAuctionOpen, mintNft, formParams, updateFormParams } = useStateContext();
+    
   const [fileURL, setFileURL] = useState(null);
   async function OnChangeFile(e) {
     //setIsLoading(true)
@@ -99,8 +98,8 @@ const SearchBar = () => {
           variant="outline"
           border="2px"
           borderColor="white"
-          //onClick={onOpen}
-          onClick={getMyNfts}
+          onClick={onOpen}
+          //onClick={getMyNfts}
         >
           Mint NFT
         </Button>
@@ -150,7 +149,7 @@ const SearchBar = () => {
                     </Box>
                     <Box mb="10px" fontWeight="bold">
                       <Text>Description:</Text>
-                      <Textarea mb="5px" fontWeight="bold" placeholder="write here..." onChange={e => updateFormParams({...formParams, description: e.target.value})} value={formParams.description}>                        
+                      <Textarea mb="5px" placeholder="write here..." onChange={e => updateFormParams({...formParams, description: e.target.value})} value={formParams.description}>                        
                       </Textarea>                     
                     </Box>
                     <Box mb="30px" fontWeight="bold">

@@ -12,7 +12,7 @@ import { useStateContext } from '../../context';
 import AuctionPlacebid from "./AuctionPlacebid";
 
 const AuctionSealbid = () => {
-  const { sealBid, connect, address, getNFTData, nfttoken, getMyNfts, sealedDetails, sealed, setsealParams, sealParams, byte } = useStateContext();
+  const { sealBid, connect, address, getNFTData, highestBid, getAllNFTs, nfttoken, getMyNfts, sealedDetails, sealed, setsealParams, sealParams, byte } = useStateContext();
   const [value, setValue] = useState(address);
   const { onCopy, hasCopied } = useClipboard(value);
   const [show, setShow] = useState(false);
@@ -29,10 +29,12 @@ const AuctionSealbid = () => {
   }
   //console.log("chu", sealParams);
   const seal = () => {
+    console.log("a girl")
     //setShow(true);
+    getMyNfts();
     //getNFTData()
     //nfttoken()
-    sealBid()
+    //sealBid()
   }
 
   return (
@@ -139,7 +141,7 @@ const AuctionSealbid = () => {
                     borderColor="white"
                     bgColor="black"
                     width="20%"
-                    onClick={sealedDetails}
+                    onClick={highestBid}
                   >
                     Seal Bid
                   </Button>              
