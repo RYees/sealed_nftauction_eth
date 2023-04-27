@@ -98,8 +98,8 @@ const SearchBar = () => {
           variant="outline"
           border="2px"
           borderColor="white"
-          onClick={onOpen}
-          //onClick={getMyNfts}
+          //onClick={onOpen}
+          onClick={getMyNfts}
         >
           Mint NFT
         </Button>

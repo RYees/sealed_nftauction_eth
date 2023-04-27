@@ -7,7 +7,7 @@ import { uploadFileToIPFS, uploadJSONToIPFS } from "../pages/pianata";
 import { Sepolia } from "@thirdweb-dev/chains";
 import { ThirdwebSDK } from "@thirdweb-dev/sdk/evm";
 import axios from "axios";
-
+import NextCors from 'nextjs-cors';
 const StateContext = createContext();
 
 const getContractData = async() => {
@@ -22,7 +22,7 @@ const getContractData = async() => {
 
 export const StateContextProvider = ({ children }) => {
    const [currentaddress, setAddress] = useState("");
-   const [mynft, storeMyNft] = useState(""); 
+   const [mynft, storeMyNft] = useState([]); 
    const [sealed, sealSuccess] = useState(false);
    const [donebid, bidSuccess] = useState(false);
    const [revealed, revealSuccess] = useState(false);
@@ -103,30 +103,37 @@ export const StateContextProvider = ({ children }) => {
       
     }  
     
-    async function getMyNfts() {
+    async function getMyNfts(req, res) {
       try {
         if(address){
           const contracts = await getContractData();
           //Pull the deployed contract instance
           
           //const alltokens = [1];
-          console.log("gap", tokens);
-          const items = await Promise.all(tokens.map(async i => {
-            // let val = 1;
-            // let tokenId = val.toString();
-              const tokenURI = await contracts.call('tokenURI', [i]);
+            console.log("gap", tokens);
+            const game = [1,2,3,4];
+          const items = await Promise.all(game.map(async i => {
+            try {
+            console.log("look", i);
+            let val = 2;
+            let tokenId = val.toString();
+            const tokenURI = await contracts.call('tokenURI', [i]);        
               let meta = await axios.get(tokenURI);
+              //console.log("can", meta.data);
               meta = meta.data;
-              // console.log("meta dts", meta);
               let item = {
                 tokenId: i,
                 image: meta.image,
                 ownername: meta.ownername,
-                description: meta.description,
+                description: meta.description, 
               }
-              return item;              
+              //console.log("out", item);
+              return item;  
+            } catch(error){
+              console.log("modul", error);
+            }              
           }));
-          console.log("my nft", items);
+          console.log("out", items);
           storeMyNft(items);
           //updatemyData(items);
         } else { console.log("connect to you wallet, to proceed"); }
@@ -442,8 +449,8 @@ export const StateContextProvider = ({ children }) => {
          // }
           //highestValue(transaction);
           //console.log("tokenId amir",transact);
-        } else { console.log("No wallet is connected"); } 
-      }
+        } else { console.log("No wallet is connected"); 
+      } }
       catch(e) {
           alert( "Upload error"+e )
       }

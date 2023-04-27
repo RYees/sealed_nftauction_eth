@@ -22,13 +22,11 @@ const liveList = [
   },
 ];
 
-const MynftCard = () => {
+const MynftCard = (data) => {
   const {connect, address, getNFTData, getMyNfts, nfttoken, tokens } = useStateContext();
   useEffect(() => {
-    nfttoken();
-    getMyNfts()
+  //  nfttoken();
   });
-  
   return (
     <Box>
       <Flex justifyContent="space-between">
@@ -39,11 +37,11 @@ const MynftCard = () => {
       </Flex>
       <Flex gap={5} marginBottom="10">
       {/* <Image boxSize="xs" src={mynft.image} alt="" rounded="xl" /> */}
-        {liveList.map((auction) => {
-          return (
-            <Box key={auction.id} color="black">
+        {/* {liveList.map((auction) => { */}
+        
+            <Box key={data.data.tokenId} color="black">
               <a href="./nft-auction-page">
-                <Image boxSize="xs" src={auction.img} alt="" rounded="xl" />
+                <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />
               </a>
 
               <Box>
@@ -62,8 +60,8 @@ const MynftCard = () => {
               </a>
               </Box>
             </Box>
-          );
-        })}
+     
+        {/* })} */}
       </Flex>
      
     </Box>
