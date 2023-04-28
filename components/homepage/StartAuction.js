@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import MynftCard from "./MynftCard";
 import { useStateContext } from '../../context';
 
@@ -9,13 +9,23 @@ const StartAuction = () => {
    // nfttoken();
     // getMyNfts();
   });
-  console.log("flavor", mynft);
+  //console.log("flavor", mynft);
   return (
-    <Flex marginX="20">
-      {mynft.map((value, index) => {
-          return <MynftCard data={value} key={index}></MynftCard>;
-      })}
-    </Flex>
+    <>
+      <Flex justifyContent="space-between" marginX={20} marginTop={8}>
+        <Text fontSize="2xl" color="black">
+          My Nft
+        </Text>
+        <Text fontSize="md"> See All</Text>
+      </Flex>
+
+      <Flex marginX="20" marginTop={10}>
+        {mynft.map((value, index) => {
+            return <MynftCard data={value} key={index}></MynftCard>;
+        })}
+      </Flex>
+    
+    </>
   )
 }
 

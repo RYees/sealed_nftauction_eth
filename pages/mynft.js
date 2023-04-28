@@ -10,6 +10,7 @@ const mynft = () => {
     nfttoken();
     getMyNfts();
    });
+   
   return (
     <Box height="100vh">
     <Mint />

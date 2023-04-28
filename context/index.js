@@ -16,13 +16,14 @@ const getContractData = async() => {
   const address = await signer.getAddress();
   const sdk = ThirdwebSDK.fromSigner(signer);
    //const sdk = new ThirdwebSDK(Sepolia);
-   const contract = await sdk.getContract("0x2ccbAA696F0844ADD50802d323A537441E76DA87");
+   const contract = await sdk.getContract("0x951fA01d31C1ACF67F3714d295411294C66f35e1");
    return contract;
 };
 
 export const StateContextProvider = ({ children }) => {
    const [currentaddress, setAddress] = useState("");
    const [mynft, storeMyNft] = useState([]); 
+   const [allNfts, setallNfts] = useState([]);
    const [sealed, sealSuccess] = useState(false);
    const [donebid, bidSuccess] = useState(false);
    const [revealed, revealSuccess] = useState(false);
@@ -40,6 +41,7 @@ export const StateContextProvider = ({ children }) => {
   const [revealParams, setrevealParams ] = useState({ listId:'', bidvalue:'', passcode:'' });
   const [idParams, setidParams ] = useState({ listId:'' });
   const [transferParams, settransferParams ] = useState({ to:'', amount:'' });
+  const [startauctionParams, startAuctionParams ] = useState({ tokenId:'', price:'', auction_duration:'', auction_reveal:'' });
   const [byte, setByte] = useState();
   const [tokens, setalltokens] = useState([]);
    
@@ -53,7 +55,7 @@ export const StateContextProvider = ({ children }) => {
           console.log("signer", signer);
           console.log("address", address);
           console.log("sdk", sdk);
-          const contract = await sdk.getContract("0x2ccbAA696F0844ADD50802d323A537441E76DA87");
+          const contract = await sdk.getContract("0x951fA01d31C1ACF67F3714d295411294C66f35e1");
           //console.log("monica", contract);
       } catch (error) {
       console.log(error);
@@ -94,6 +96,8 @@ export const StateContextProvider = ({ children }) => {
           const data = await contracts.call("mintNftAuction",[metadataURL]);
           //const data = await contracts.call("name");       
           console.log("people", await data);
+          // nfttoken();
+          // getMyNfts();
         } else {
           alert("connect to you wallet, to proceed")
         }
@@ -110,53 +114,56 @@ export const StateContextProvider = ({ children }) => {
           //Pull the deployed contract instance
           
           //const alltokens = [1];
-            console.log("gap", tokens);
-            const game = [1,2,3,4];
-          const items = await Promise.all(game.map(async i => {
+           // console.log("gap", tokens);
+            const game = [1];
+          const items = await Promise.all(tokens.map(async i => {
             try {
-            console.log("look", i);
-            let val = 2;
+            //console.log("look", i);
+            let val = i;
             let tokenId = val.toString();
-            const tokenURI = await contracts.call('tokenURI', [i]);        
+            const tokenURI = await contracts.call('tokenURI', [tokenId]);        
               let meta = await axios.get(tokenURI);
-              //console.log("can", meta.data);
+             // console.log("can", meta.data);
               meta = meta.data;
               let item = {
-                tokenId: i,
+                tokenId: tokenId,
                 image: meta.image,
                 ownername: meta.ownername,
                 description: meta.description, 
               }
-              //console.log("out", item);
+             // console.log("out", item);
               return item;  
             } catch(error){
               console.log("modul", error);
             }              
           }));
-          console.log("out", items);
-          storeMyNft(items);
+          // console.log("out", items);
+           storeMyNft(items);
           //updatemyData(items);
         } else { console.log("connect to you wallet, to proceed"); }
       }
       catch(e) {
-          alert( "Upload error"+e )
+          console.log( "Upload error"+e )
       }
     }
   
     async function startAuction() {
-      const { tokenId, price, auction_duration, auction_reveal } = listingParams;
+      const { tokenId, price, auction_duration, auction_reveal } = startauctionParams;
+      console.log("kids", startauctionParams);
       let _price = ethers.utils.parseEther(price);
       let _tokenId = tokenId.toString();
-      let durationInSeconds = ethers.utils.parseEther(auction_duration);
-      let revealInSeconds = ethers.utils.parseEther(auction_reveal);
+      let durationInSeconds = new Date(auction_duration).getTime();
+      let revealInSeconds = new Date(auction_reveal).getTime();
+      console.log("id", tokenId);
       try {
         if(address){     
           const contracts = await getContractData();
           updateMessage("Please wait.. uploading (upto 5 mins)")     
           let startingPrice = await contracts.call('getListPrice');
-          startingPrice = startingPrice.toString()
+          startingPrice = startingPrice.toString();
+          console.log("be", durationInSeconds, revealInSeconds);
           let transaction = await contracts.call('startAuctionListing', [_tokenId, _price, durationInSeconds, revealInSeconds],{ value: startingPrice });
-          //console.log("success", transaction);
+          console.log("success", transaction);
           updateMessage("Data inserted successfully!")  
           //window.location.replace("/")
         } else { console.log("connect to you wallet, to proceed"); }
@@ -166,42 +173,56 @@ export const StateContextProvider = ({ children }) => {
       }
     }
 
+    const epochTohumanReadble = (timestamp) => {        
+      let date = new Intl.DateTimeFormat('en-US', 
+      { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: 
+      '2-digit', second: '2-digit' }).format(timestamp)
+      return date;       
+    }
+
     async function getAllNFTs() {
       try {
         if(address){
         //Pull the deployed contract instance
         const contracts = await getContractData();
-        //create an NFT Token
-        console.log("contraacts", contracts);
         let transaction = await contracts.call('getAllNFTListings');
-        console.log("transacts", transaction);
-
+        //console.log("transacts", transaction);
+      
         //Fetch all the details of every NFT from the contract and display
         const items = await Promise.all(transaction.map(async i => {
+          //if(i == 1){
+            let v = i.tokenId;
+            //console.log("nasawe", v)
             const tokenURI = await contracts.call('tokenURI', [i.tokenId]);
             let meta = await axios.get(tokenURI);
             meta = meta.data;
+           // console.log("shall we",  parseInt(i.endAt['_hex']));
+            //console.log("net price",  ethers.utils.formatEther(i.price.toString()));
             // IPname, description, fullname, country, street
+    
             let item = {
               tokenId: i.tokenId.toNumber(),
               seller: i.seller,
-              price: ethers.utils.formatEther(i.price.toString()),
-              startAt: i.startAt.toNumber(),
-              endAt: i.endAt.toNumber(),
-              revealEndtime: i.revealEndtime.toNumber(),
-              status: i.status.toNumber(),
+              price: ethers.utils.formatEther(i.price.toString()), 
+              netPrice: ethers.utils.formatEther(i.netPrice.toString()), 
+              startAt: epochTohumanReadble(i.startAt.toNumber()),
+              endAt: epochTohumanReadble(i.endAt.toNumber()),
+              revealEndtime: epochTohumanReadble(i.revealEndtime.toNumber()),
+              status: i.status,
               image: meta.image,
               ownername: meta.ownername,
               description: meta.description,
             }
             return item;
-        }))
-        console.log("All nft data", items)
+          //} else {console.log("why")}
+        }));      
+        console.log("All nft data", items);
+        setallNfts(items);
        
         } else { console.log("connect to you wallet, to proceed"); }
       }
       catch(e) {
-          alert( "Upload error"+e )
+          console.log( "Upload error"+e );
       }
     }
 
@@ -425,13 +446,13 @@ export const StateContextProvider = ({ children }) => {
             transaction.push(transact);
             
           }
-          // console.log("fibi",transaction);
+          //console.log("fibi",transaction);
           setalltokens([...transaction]);
           return transaction;
         } else { console.log("No wallet is connected"); } 
       }
       catch(e) {
-          alert( "Upload error"+e )
+          console.log( "Upload error"+e )
       }
     }
     
@@ -508,13 +529,17 @@ export const StateContextProvider = ({ children }) => {
         revealParams,
         idParams,
         transferParams,
+        startauctionParams, 
+        startAuctionParams,
         byte,
         winAdd,
         highestBid,
         nfttoken,
         tokens,
         sealedDetails,
-        getAllNFTs
+        getAllNFTs,
+        allNfts,
+        setallNfts
       }}
     >
       {children}

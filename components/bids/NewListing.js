@@ -17,10 +17,23 @@ import {
 import { useStateContext } from '../../context';
 
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
+
+export async function getStaticProps(context) {
+  console.log(context.params); // return { movieId: 'Mortal Kombat' }
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}
 
 const NewListing = () => {
-  const { address, message, startAuction, getMyNfts, mynft, listingParams, updateListingParams } = useStateContext();
+  const router = useRouter();
+  const query = router.query;
+  const tokenId = query.id;
+
+  const { address, message, startauctionParams, startAuctionParams, startAuction, getNFTData, getAllNFTs, getMyNfts, mynft, listingParams, updateListingParams } = useStateContext();
   const [currentStep, setCurrentStep] = useState("1");
+  //listingParams.tokenId = tokenId;
 
   const formChange = (event) => {
     updateListingParams((prev) => ({
@@ -28,40 +41,47 @@ const NewListing = () => {
       [event.target.name]: event.target.value
     }))
   }
+  console.log("amy", startauctionParams);
+  const handleFormFieldChange = (fieldName, e) => {
+    startauctionParams.tokenId = tokenId;
+    startAuctionParams({ ...startauctionParams, [fieldName]: e.target.value })
+  }
 
+ //console.log(listingParams);
   const auctionstart = () => {
     startAuction()
   }
 
-  const Step1 = () => {
+    const Step1 = () => {
     return (
       <Flex direction="column" marginY="5rem" paddingX="15rem" gap={5}>
         <Flex justifyContent="center">
-          <Text fontSize="4xl" textAlign="center">
+          <Text fontSize="4xl" textAlign="center" onClick={getAllNFTs}>
             Create New Listing
           </Text>
         </Flex>
-
+        
         <Text fontSize="md" textAlign="center">
           Create a new NFT and mint it into one of your own ERC-1155 contract
         </Text>
-        <Box>
+        {/* <Box>
           <Text mb="5px" fontWeight="bold">
             TokenId:
           </Text>
-          <Input type="number" placeholder="your nft token id" size="lg" onChange={e => updateListingParams({...listingParams, tokenId: e.target.value})} value={listingParams.tokenId} />
-        </Box>
+          <Input type="number" placeholder="your nft token id" size="lg" onChange={(e) => handleFormFieldChange('tokenId', e)}  value={startauctionParams.tokenId} />
+        </Box> */}
         <Box>
           <Text mb="5px" fontWeight="bold">
             Price:
           </Text>
-          <NumberInput defaultValue={0} step={0.1}  name={'price'}  value={listingParams.price} onChange={(value) => formChange({ target: { name: 'price', value }})}  >
+          <Input type="number" name="datetime" step={0.1} onChange={(e) => handleFormFieldChange('price', e)} value={startauctionParams.price} />
+          {/* <NumberInput defaultValue={0} step={0.1}  name={'price'}  value={listingParams.price} onChange={(value) => formChange({ target: { name: 'price', value }})} >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
                 </NumberInputStepper>
-          </NumberInput>
+          </NumberInput> */}
         </Box>
         {/* <Box>
           <Text mb="5px" fontWeight="bold">
@@ -106,26 +126,28 @@ const NewListing = () => {
           <Text mb="5px" fontWeight="bold">
             Auction Duration(s):
           </Text>
-          <NumberInput defaultValue={60} step={60} name={'auction_duration'} value={listingParams.auction_duration} onChange={(value) => formChange({ target: { name: 'auction_duration', value }})} >
+          <Input type="datetime-local" name="datetime" onChange={(e) => handleFormFieldChange('auction_duration', e)} value={startauctionParams.auction_duration} />
+          {/* <NumberInput defaultValue={60} step={60} name={'auction_duration'} value={listingParams.auction_duration} onChange={(value) => formChange({ target: { name: 'auction_duration', value }})} >
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
                 </NumberInputStepper>
-          </NumberInput>
+          </NumberInput> */}
         </Box>
 
         <Box>
           <Text mb="5px" fontWeight="bold">
             Reveal Duration(s):
           </Text>
-          <NumberInput defaultValue={60} step={60} name={'auction_reveal'} value={listingParams.auction_reveal} onChange={(value) => formChange({ target: { name: 'auction_reveal', value }})}>
+          <Input type="datetime-local" name="datetime" onChange={(e) => handleFormFieldChange('auction_reveal', e)} value={startauctionParams.auction_reveal} />
+          {/* <NumberInput defaultValue={60} step={60} name={'auction_reveal'} value={listingParams.auction_reveal} onChange={(value) => formChange({ target: { name: 'auction_reveal', value }})}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
                 </NumberInputStepper>
-          </NumberInput>
+          </NumberInput> */}
         </Box>
         {/* <Flex direction="column" px="10rem" gap={5}>
           <Text fontSize="md">
