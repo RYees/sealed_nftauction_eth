@@ -2,13 +2,13 @@ import React from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
 import { useStateContext } from '../../context';
 
-const WithdrawBid= () => {
+const WithdrawBid= ({id}) => {
   const { withdrawBid, connect, getNFTData, getMyNfts, winnerAddress, highestVal, setidParams, idParams } = useStateContext();
-  console.log("bidsdd", bidParams);
+  //console.log("bidsdd", bidParams);
 
   setidParams(1);
   const withdraw = () => {
-    withdrawBid()
+    withdrawBid(id)
   }
 
   return (

@@ -3,6 +3,7 @@ import { Flex, Text, Box } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const liveList = [
   {
@@ -44,6 +45,7 @@ const UpcomingList = [
 
 
 const AuctionCard = (data) => {
+  const router = useRouter();
   //console.log("card", data);
   return (
     <Box>
@@ -56,23 +58,47 @@ const AuctionCard = (data) => {
    
       <Flex gap={5} marginBottom="10">
             <Box key={data.data.tokenId} color="black">
-              <Link href="./auctions/1">
-                <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />
-              </Link>
+                {/* <Link
+                   href={{
+                    pathname: `./auctions/[tokenId]`,
+                    query: {
+                      id: data.data.tokenId, // pass the id 
+                    },
+                  }}
+                  as={`/auctions/${data.data.tokenId}`}                
+                >    */}
+             
+                          
+                    <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" onClick={()=>{
+                                     router.push({
+                                      pathname: "./auctions/[tokenId]",
+                                      query: { data: JSON.stringify(data.data) },
+                                    });
+                    }}/> 
+                               
+               {/* </Link> */}
             </Box>      
       </Flex>
   
       
       <Flex justifyContent="space-between">
-        <Text fontSize="2xl">Upcoming Auction</Text>
+        <Text fontSize="2xl">Upcoming auctions</Text>
         <Text fontSize="md"> See All</Text>
       </Flex>
 
       <Flex gap={5} marginBottom="10">
             <Box key={data.data.tokenId} color="black">
-              <Link href="./auctions/1">
-                <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />
-              </Link>
+                <Link
+                   href={{
+                    pathname: `./auctions/[tokenId]`,
+                    query: {
+                      id: data.data.tokenId, // pass the id 
+                    },
+                  }}
+                  as={`/auctions/${data.data.tokenId}`}                
+                >   
+                    <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />               
+                </Link>
             </Box>      
       </Flex>
 
@@ -82,8 +108,16 @@ const AuctionCard = (data) => {
       </Flex>
        <Flex gap={5} marginBottom="10">
             <Box key={data.data.tokenId} color="black">
-              <Link href="./auctions/1">
-                <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />
+              <Link
+                   href={{
+                    pathname: `./auctions/[tokenId]`,
+                    query: {
+                      id: data.data.tokenId, // pass the id 
+                    },
+                  }}
+                  as={`/auctions/${data.data.tokenId}`}                
+                >   
+                    <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />               
               </Link>
             </Box>      
       </Flex>
@@ -95,9 +129,17 @@ const AuctionCard = (data) => {
 
        <Flex gap={5} marginBottom="10">
             <Box key={data.data.tokenId} color="black">
-              <Link href="./auctions/1">
-                <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />
-              </Link>
+                <Link
+                   href={{
+                    pathname: `./auctions/[tokenId]`,
+                    query: {
+                      id: data.data.tokenId, // pass the id 
+                    },
+                  }}
+                  as={`/auctions/${data.data.tokenId}`}                
+                >   
+                    <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />               
+                </Link>
             </Box>      
       </Flex>
 

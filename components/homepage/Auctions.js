@@ -13,10 +13,10 @@ const Auctions= () => {
     //   <AuctionCards />
     // </Flex>
     <Flex marginX="20" marginTop={10}>
-    {allNfts.map((value, index) => {
-        return <AuctionCards data={value} key={index}></AuctionCards>;
-    })}
-  </Flex>
+      {allNfts.map((value, index) => {
+          return <AuctionCards data={value} key={index}></AuctionCards>;
+      })}
+    </Flex>
   );
 };
 

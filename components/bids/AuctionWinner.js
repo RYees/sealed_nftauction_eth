@@ -2,12 +2,12 @@ import React from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
 import { useStateContext } from '../../context';
 
-const AuctionWinner= () => {
+const AuctionWinner= ({id}) => {
   const { completeAuction, connect, getNFTData, getMyNfts, winnerAddress, highestVal, setidParams, idParams } = useStateContext();
 
   setidParams(1);
   const winner = () => {
-    completeAuction()
+    completeAuction(id)
   }
 
   return (

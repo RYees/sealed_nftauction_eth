@@ -9,7 +9,7 @@ import { useStateContext } from '../../context';
 import AuctionWinner from "./AuctionWinner";
 import WithdrawBid from "./WithdrawBid";
 
-const RevealBids= () => {
+const RevealBids= ({amount, id}) => {
   const { reveal, connect, address, revealed, revealmessage, winnerAddress, highestVal, setrevealParams, revealParams } = useStateContext();
   const [show, setShow] = useState(false);
   const [winAddress, setwinAddress ] = useState();
@@ -20,8 +20,10 @@ const RevealBids= () => {
       [event.target.name]: event.target.value
     }))
   }
-
+console.log("neb", amount);
   const handleFormFieldChange = (fieldName, e) => {
+    revealParams.listId = id;
+    revealParams.bidvalue = amount;
     setrevealParams({ ...revealParams, [fieldName]: e.target.value })
   }
 
@@ -35,7 +37,7 @@ const RevealBids= () => {
    {!revealed ? 
    <Box>
     <Flex marginX="20" marginTop={10} flexDirection="column" rowGap={3} mb="2">
-          <Text marginRight="8px">
+          {/* <Text marginRight="8px">
               <Input type="number" placeholder="listing id" height="40px" value={revealParams.listId} onChange={(e) => handleFormFieldChange('listId', e)} />
           </Text>
           <NumberInput defaultValue={0} step={0.1} name={'bidvalue'} value={revealParams.bidvalue} onChange={(value) => formChange({ target: { name: 'bidvalue', value }})}>
@@ -44,7 +46,7 @@ const RevealBids= () => {
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
               </NumberInputStepper>
-          </NumberInput>
+          </NumberInput> */}
           <Text marginRight="8px">
               <Input type="" placeholder="passcode" height="40px" value={revealParams.passcode} onChange={(e) => handleFormFieldChange('passcode', e)}/>
           </Text>
@@ -70,11 +72,11 @@ const RevealBids= () => {
      <>
      { winAddress == address ?
       <Box>
-         <AuctionWinner/>
+         <AuctionWinner id={id}/>
       </Box>
      :
       <Box>
-        <WithdrawBid/>
+        <WithdrawBid id={id}/>
       </Box>
     }
 

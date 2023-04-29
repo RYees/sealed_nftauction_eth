@@ -7,16 +7,18 @@ import { Button, Flex, Text, Box, Image, Input, useClipboard,  NumberInput,
 import { useStateContext } from '../../context';
 import RevealBids from "./RevealBids";
 
-const AuctionPlacebid = ({bytehash}) => {
+const AuctionPlacebid = ({amount, id ,bytehash}) => {
     // console.log("//;",0x8f793261cfdc56049b7eba03d1558afa8b7ba5ba20157247c737165e76cd92a6);
   const { bid, connect, getNFTData, getMyNfts, donebid, setbidParams, bidParams } = useStateContext();
   const [show, setShow] = useState(false);
   const [revealed, showReveal] = useState(false);
   const [value, setValue] = useState(bytehash);
   const { onCopy, hasCopied } = useClipboard(value);
-  //console.log("bidsdd", bidParams);
+  //console.log("bidsdd", amount);
 
   const handleFormFieldChange = (fieldName, e) => {
+    bidParams.listId = id;
+    bidParams.bidamount = amount
     setbidParams({ ...bidParams, [fieldName]: e.target.value })
   }
   
@@ -41,11 +43,11 @@ const AuctionPlacebid = ({bytehash}) => {
             </Flex>
             
             <Box>
-                <Box>
+                {/* <Box>
                     <Text marginRight="180px" mb="3" mt="12">
                         <Input width="180%" height="40px" onChange={(e) => handleFormFieldChange('listId', e)} value={bidParams.listId} />
                     </Text>
-                </Box>
+                </Box> */}
                 <Box>
                     <Text marginRight="180px" mb="8">
                         <Input placeholder="paste your sealed hash" width="180%" height="40px" onChange={(e) => handleFormFieldChange('sealhash', e)} value={bidParams.sealhash} />
@@ -76,13 +78,13 @@ const AuctionPlacebid = ({bytehash}) => {
                         borderColor="white"
                         bgColor="black"
                         width="50%"
-                        onClick={bidding}
+                        onClick={bid}
                     >
                     Place Bid
                     </Button>
                 </Flex>
             </Box> 
-            </Box>: <RevealBids/>}
+            </Box>: <RevealBids amount={amount} id={id}/>}
     </>
   );
 };

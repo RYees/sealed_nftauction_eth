@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Text, Button, Flex } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
+import Link from "next/link";
 
 const AunctinDetails = [
   {
@@ -26,10 +27,10 @@ const AunctinDetails = [
   },
 ];
 
-const TopAuctionCard = () => {
+const TopAuctionCard = (data) => {
   const basicBoxStyles = {
-    width: "100%",
-    height: "100%",
+    // width: "1000%",
+    // height: "100%",
     color: "white",
     textShadow: "0 0 20px black",
     fontWeight: "bold",
@@ -37,6 +38,7 @@ const TopAuctionCard = () => {
     p: "10",
     flexDirection: "column",
     gap: "5",
+    
   };
 
   const topAunctionStyle = {
@@ -63,14 +65,27 @@ const TopAuctionCard = () => {
   };
   return (
     <Flex justifyContent="space-between">
-      {AunctinDetails.map((auction) => {
-        return (
-          <Flex sx={topAunctionStyle} key={auction.id}>
-            <Flex backgroundImage={`url(${auction.img})`} sx={basicBoxStyles}>
-              <Flex>
-                <a href="./nft-auction-page">
-                  <Image src="/images/svg/profile.svg" alt="" />
-                </a>
+      {/* {AunctinDetails.map((auction) => { */}
+        {/* return ( */}
+          <Flex sx={topAunctionStyle} key={data.data.tokenId}>
+            <Flex backgroundImage={`url(${data.data.image})`} sx={basicBoxStyles}>
+            {/* <Flex gap={5} marginBottom="10">
+                <Box key={data.data.tokenId} color="black">
+                  <Link href="./auctions/1">
+                    <Image boxSize="xs" src={data.data.image} alt="" rounded="xl" />
+                  </Link>
+                </Box>      
+            </Flex> */}
+          <Link
+                href={{
+                pathname: `./auctions/[tokenId]`,
+                query: {
+                  id: data.data.tokenId, // pass the id 
+                },
+              }}
+              as={`/auctions/${data.data.tokenId}`}               
+            >   
+            <Flex>            
                 <Box marginLeft={5}>
                   <Text marginBottom={2} fontSize="md">
                     @TheManKinniboss
@@ -80,14 +95,15 @@ const TopAuctionCard = () => {
               </Flex>
 
               <Text> Starting Price</Text>
-              <Text fontSize="3xl">{auction.price}Eth</Text>
+              <Text fontSize="3xl">{data.data.price}Eth</Text>
               <Text>Aunction Date</Text>
-              <Text fontSize="3xl">{auction.auctionDate}</Text>
-              <Button sx={aunctionbtnStyle}>Enter Auction</Button>
+              <Text fontSize="3xl">{data.data.startAt}</Text>
+              <Button sx={aunctionbtnStyle}>Enter Auction</Button> 
+              </Link>             
             </Flex>
           </Flex>
-        );
-      })}
+        {/* ); */}
+      {/* })} */}
     </Flex>
   );
 };

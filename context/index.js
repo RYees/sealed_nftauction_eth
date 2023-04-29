@@ -285,7 +285,7 @@ export const StateContextProvider = ({ children }) => {
     async function bid() {
       const { listId, sealhash, bidamount } = bidParams;
       // console.log("vla", listId);
-      // console.log("you", sealhash);
+       console.log("you", bidParams);
       // console.log("stirn", sealhash.toString());
       try {
         if(address){    
@@ -306,6 +306,7 @@ export const StateContextProvider = ({ children }) => {
     
     async function reveal() {
       const { listId, bidvalue, passcode } = revealParams;
+      console.log("reveal", revealParams);
       try {
         if(address){   
           let _bidvalue = ethers.utils.parseEther(bidvalue);
@@ -324,6 +325,7 @@ export const StateContextProvider = ({ children }) => {
 
     async function completeAuction(listingId) {
       const { listId } = idParams;
+      console.log("win", idParams);
       try {
         if(address){  
           let listId = listingId.toString();      
@@ -339,6 +341,7 @@ export const StateContextProvider = ({ children }) => {
 
     async function withdrawBid(listingId) {
       const { listId } = idParams;
+      console.log("draw", idParams);
       try {
         if(address){  
           let listId = listingId.toString();      

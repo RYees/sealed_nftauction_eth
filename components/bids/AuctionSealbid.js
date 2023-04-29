@@ -10,9 +10,14 @@ import TopAuctionCard from "components/homepage/TopAuctionCard";
 import TopAunction from "components/homepage/TopAunction";
 import { useStateContext } from '../../context';
 import AuctionPlacebid from "./AuctionPlacebid";
+import { useRouter } from "next/router";
 
-const AuctionSealbid = () => {
+const AuctionSealbid = () => {  
   const { sealBid, connect, address, getNFTData, highestBid, getAllNFTs, nfttoken, getMyNfts, sealedDetails, sealed, setsealParams, sealParams, byte } = useStateContext();
+  const router = useRouter();
+  const obj = JSON.parse(router.query.data);
+    //console.log("whydid",  obj);
+
   const [value, setValue] = useState(address);
   const { onCopy, hasCopied } = useClipboard(value);
   const [show, setShow] = useState(false);
@@ -47,10 +52,11 @@ const AuctionSealbid = () => {
         </Text>
         <Flex justifyContent="center" gap={20}>
           <Box justifyContent="space-around">
-            <a href="./nft-auction-page">
+            <a href="">
               <Image
-                boxSize="100%"
-                src="/images/svg/NFT1.svg"
+                boxSize="80%"
+                src={obj.image}
+                marginTop={10}
                 alt=""
                 rounded="xl"
               />
@@ -69,28 +75,26 @@ const AuctionSealbid = () => {
               <Text fontSize="2xl" fontWeight="bold">
                 The Rain Forest
               </Text>
-              <Text fontSize="xl"> Created by @Mankiniboss</Text>
+              <Text fontSize="xl">{obj.ownername}</Text>
             </Box>
 
-            <Flex justifyContent="space-between">
+            <Flex justifyContent="space-between" gap={51}>
               <Box>
-                <Text fontSize="md"> Starting Price</Text>
+                <Text fontSize="md">Start price</Text>
                 <Text fontSize="xl" fontWeight="bold">
-                  0.45 ETH
+                    {obj.price}ETH
                 </Text>
               </Box>
               <Box>
                 <Text fontSize="md"> Auction Ends In</Text>
-                <Text fontSize="xl" fontWeight="bold">
-                  {" "}
-                  12.07.56
+                <Text fontSize="lg" fontWeight="bold">
+                   D:{obj.endAt}
                 </Text>
               </Box>
               <Box>
-                <Text fontSize="md"> Reveal time Ends In</Text>
+                <Text fontSize="md"> Reveal time Ends</Text>
                 <Text fontSize="xl" fontWeight="bold">
-                  {" "}
-                  12.07.56  
+                  D:{obj.revealEndtime}
                 </Text>
               </Box>
             </Flex>
@@ -101,12 +105,7 @@ const AuctionSealbid = () => {
                 Description
               </Text>
               <Text fontSize="md">
-                Description The philosopher Seneca said “loneliness is not being
-                alone, but being empty” and that’s something I realized very
-                young. Contrary to what most of us are taught, I believe being
-                alone can be a good thing, and this notion is the basis for
-                Solitude, which aims to explore feelings of lonesomeness in
-                tandem with spiritual connections within the natural world.
+                      {obj.description}
               </Text>
             </Box>
             {!sealed ? 
@@ -139,15 +138,15 @@ const AuctionSealbid = () => {
                     variant="outline"
                     border="2px"
                     borderColor="white"
-                    bgColor="black"
+                    bgColor="black" 
                     width="20%"
-                    onClick={highestBid}
+                    onClick={sealBid}
                   >
                     Seal Bid
                   </Button>              
                 </Flex>
             </Box>
-         : <AuctionPlacebid bytehash={byte}/>}        
+         : <AuctionPlacebid amount={sealParams.bidvalue} id={obj.tokenId} bytehash={byte}/>}        
             
           </Flex>
         </Flex>
